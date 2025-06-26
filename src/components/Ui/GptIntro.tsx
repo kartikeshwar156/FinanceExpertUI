@@ -32,7 +32,7 @@ export default function GptIntro() {
           >
             <i className="fa-solid fa-bolt "></i>
           </span>
-          <span className="mr-2">gpt - 3.5</span>
+          <span className="mr-2">gpt - 3.9</span>
         </button>
 
         <button

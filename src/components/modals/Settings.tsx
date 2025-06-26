@@ -6,16 +6,17 @@ import { IonIcon } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 import { useSettings } from "../../store/store";
 import ProfileTab from "../Tabs/ProfileTab";
+import SubscriptionsTab from "../Tabs/SubscriptionsTab";
 
 const varinats = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.8, transition: { duration: 0.15 } },
 };
-const tabs = ["settings", "profile"];
+const tabs = ["profile", "subscriptions"];
 export default function Settings() {
   const [selectedTab, setSelectedTab] = useState(
-    "settings"
+    "profile"
   );
   const setModalVisible = useSettings((state) => state.setModalVisible);
 
@@ -53,8 +54,9 @@ export default function Settings() {
         </div>
       </div>
       <div className="w-full h-[1px] bg-gray-500"></div>
-      <SettingsTab visible={selectedTab === "settings"} />
+      {/* <SettingsTab visible={selectedTab === "settings"} /> */}
       <ProfileTab visible={selectedTab === "profile"} />
+      <SubscriptionsTab visible={selectedTab === "subscriptions"} />
     </motion.div>
   );
 }

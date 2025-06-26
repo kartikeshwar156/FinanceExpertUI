@@ -13,13 +13,15 @@ const varinats = {
 };
 
 export default function ProfileTab({ visible }: { visible: boolean }) {
-  const [avatar, name, setUser] = useAuth((state) => [
-    state.user.avatar,
-    state.user.name,
-    state.setUser,
-  ]);
+  const { user, setUser, userInfo, setUserInfo } = useAuth((state) => ({
+    user: state.user,
+    setUser: state.setUser,
+    userInfo: state.userInfo,
+    setUserInfo: state.setUserInfo,
+  }));
+
   const [editName, setEditName] = useState(false);
-  const [myname, setMyName] = useState(name);
+  const [name, setName] = useState(userInfo?.userName || "");
 
   function handlePicChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
@@ -28,21 +30,16 @@ export default function ProfileTab({ visible }: { visible: boolean }) {
       reader.onloadend = () => {
         const base64String = reader.result;
         setUser({
+          ...user,
           avatar: base64String as string,
-          name,
-          email: `${name}@${name}.com`,
         });
       };
     }
   }
 
   function handleUpdateName() {
-    if (myname.trim().length === 0) return;
-    setUser({
-      avatar,
-      name: myname,
-      email: `${myname}@${myname}.com`,
-    });
+    if (name.trim().length === 0 || !userInfo) return;
+    setUserInfo({ ...userInfo, userName: name.trim() });
     setEditName(false);
   }
 
@@ -50,7 +47,7 @@ export default function ProfileTab({ visible }: { visible: boolean }) {
     <motion.div
       variants={varinats}
       initial="hidden"
-      animate="visible"
+      animate={visible ? "visible" : "hidden"}
       exit="exit"
       className={classNames("p-2", { hidden: !visible })}
     >
@@ -65,7 +62,7 @@ export default function ProfileTab({ visible }: { visible: boolean }) {
         />
         <Avatar
           className="avatar  h-20 w-20 ring-2 rounded-full object-cover ring-gray-300 p-1 dark:ring-gray-500"
-          src={avatar}
+          src={user.avatar}
         >
           <button
             type="button"
@@ -81,40 +78,68 @@ export default function ProfileTab({ visible }: { visible: boolean }) {
           </button>
         </Avatar>
       </div>
-      <div className="my-4 ">
-        {!editName && (
-          <div className="flex items-center justify-center text-xl">
-            <span className="mr-2 ">{myname}</span>
-            <button
-              type="button"
-              title="Edit name"
-              className="flex items-center"
-              onClick={() => setEditName(true)}
-            >
-              <IonIcon icon={createOutline} className=" dark:text-gray-100" />
-            </button>
-          </div>
-        )}
-        {editName && (
-          <div className="flex items-center justify-center">
-            <input
-              type="text"
-              id="name"
-              value={myname}
-              onChange={(e) => setMyName(e.target.value)}
-              className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block  py-2.5 px-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder={myname}
-              required
-            />
-            <button
-              type="button"
-              className="flex items-center ml-2 text-xl"
-              onClick={handleUpdateName}
-            >
-              <IonIcon icon={checkmark} />
-            </button>
-          </div>
-        )}
+      <div className="my-4">
+        <table className="w-full text-left dark:text-gray-200">
+          <tbody>
+            <tr>
+              <td className="font-semibold py-2 pr-4">Username</td>
+              <td className="py-2">
+                {editName ? (
+                  <div className="flex items-center">
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="bg-gray-700 text-white p-1 rounded w-full"
+                      autoFocus
+                    />
+                    <button
+                      onClick={handleUpdateName}
+                      className="ml-2 text-green-500 text-xl"
+                    >
+                      <IonIcon icon={checkmark} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center">
+                    <span>{userInfo?.userName}</span>
+                    <button
+                      type="button"
+                      title="Edit name"
+                      className="flex items-center ml-2"
+                      onClick={() => setEditName(true)}
+                    >
+                      <IonIcon
+                        icon={createOutline}
+                        className="dark:text-gray-100"
+                      />
+                    </button>
+                  </div>
+                )}
+              </td>
+            </tr>
+            <tr>
+              <td className="font-semibold py-2 pr-4">Email</td>
+              <td className="py-2">{userInfo?.gmail}</td>
+            </tr>
+            <tr>
+              <td className="font-semibold py-2 pr-4">Subscription</td>
+              <td className="py-2">{userInfo?.subscriptionPlan}</td>
+            </tr>
+            {userInfo?.isPremium && (
+              <tr>
+                <td className="font-semibold py-2 pr-4">Premium Expiry Date</td>
+                <td className="py-2">
+                  {userInfo.premiumExpiryDate
+                    ? new Date(
+                        userInfo.premiumExpiryDate
+                      ).toLocaleDateString()
+                    : "N/A"}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </motion.div>
   );

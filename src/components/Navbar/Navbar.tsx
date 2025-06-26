@@ -8,11 +8,13 @@ import {
   settingsOutline,
   ellipsisHorizontalOutline,
   closeOutline,
+  logOutOutline,
 } from "ionicons/icons";
 import useChat, { ModalList, useAuth, useSettings } from "../../store/store";
 import Settings from "../modals/Settings";
 import Modal from "../modals/Modal";
 import SystemMessage from "../modals/SystemMessage";
+import { useState } from "react";
 
 export default function Navbar({
   active,
@@ -21,6 +23,10 @@ export default function Navbar({
   active: boolean;
   setActive: (v: boolean) => void;
 }) {
+  const { userInfo } = useAuth((state) => ({
+    userInfo: state.userInfo,
+  }));
+  const [isOptionsVisible, setIsOptionsVisible] = useState(false);
   const addNewChat = useChat((state) => state.addNewChat);
   const [
     isVisible,
@@ -109,20 +115,26 @@ export default function Navbar({
                 ))}
               </select>
             </div>
-            <div className="[&>.options]:focus-within:visible">
+            <div className="relative">
               <button
                 type="button"
-                className="px-2 relative py-2 inline-flex w-full items-center hover:bg-gray-700 transition group "
+                className="px-2 relative py-2 inline-flex w-full items-center hover:bg-gray-700 transition group"
+                onClick={() => setIsOptionsVisible(! isOptionsVisible)}
               >
                 <Avatar className=" h-11 w-11" />
 
-                <span className="p-2">{name}</span>
+                <span className="p-2">{userInfo?.userName}</span>
                 <span className=" ml-auto  text-gray-400 text-2xl ">
                   <IonIcon icon={ellipsisHorizontalOutline} />
                 </span>
               </button>
-              <div className="options absolute bottom-12 rounded-md left-0 right-0 bg-gray-800 font-normal invisible transition  m-2 z-30 text-gray-300 ">
-                <button
+              <div
+                className={classnames(
+                  "options absolute bottom-12 rounded-md left-0 right-0 bg-gray-800 font-normal transition  m-2 z-30 text-gray-300 ",
+                  { invisible: !isOptionsVisible }
+                )}
+              >
+                {/* <button
                   className=" p-2   hover:bg-gray-700 w-full text-left flex items-center"
                   onClick={() => setSystemMessageModalVisible(true)}
                 >
@@ -130,10 +142,13 @@ export default function Navbar({
                     <IonIcon icon={chatboxEllipsesOutline} />
                   </span>
                   <span>Custom instructions</span>
-                </button>
+                </button> */}
                 <button
                   className=" p-2   hover:bg-gray-700 w-full text-left flex items-center"
-                  onClick={() => setModalVisible(true)}
+                  onClick={() => {
+                    setModalVisible(true);
+                    setIsOptionsVisible(false);
+                  }}
                 >
                   <span className="mr-2 p-1  text-xl flex items-center">
                     <IonIcon icon={settingsOutline} />
@@ -142,12 +157,12 @@ export default function Navbar({
                 </button>
                 <div className="h-[1px] bg-gray-300"></div>
                 {/* maybe in future i will add authentication */}
-                {/* <button className=" p-2   hover:bg-gray-700  w-full  text-left flex items-center">
+                <button className=" p-2   hover:bg-gray-700  w-full  text-left flex items-center">
                   <span className="mr-2 p-1 text-xl flex items-center">
                     <IonIcon icon={logOutOutline} />
                   </span>
                   <span>Log out</span>
-                </button> */}
+                </button>
               </div>
             </div>
           </div>

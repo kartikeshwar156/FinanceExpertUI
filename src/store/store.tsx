@@ -95,19 +95,29 @@ export interface ChatType {
   clearAllChats: () => void;
 }
 
+export interface AuthType {
+  token: string;
+  apikey: string;
+  userInfo: UserInfo | null;
+  setToken: (token: string) => void;
+  setUser: (user: { name: string; email: string; avatar: string }) => void;
+  setApiKey: (apikey: string) => void;
+  setUserInfo: (userInfo: UserInfo) => void;
+  user: UserType;
+}
+
 export interface UserType {
   name: string;
   email: string;
   avatar: string;
 }
 
-export interface AuthType {
-  token: string;
-  apikey: string;
-  setToken: (token: string) => void;
-  setUser: (user: { name: string; email: string; avatar: string }) => void;
-  setApiKey: (apikey: string) => void;
-  user: UserType;
+export interface UserInfo {
+  userName: string;
+  gmail: string;
+  isPremium: boolean;
+  premiumExpiryDate: Date | null;
+  subscriptionPlan: string | null;
 }
 
 const useChat = create<ChatType>((set, get) => ({
@@ -173,6 +183,7 @@ const useChat = create<ChatType>((set, get) => ({
       })
     );
   },
+
   viewSelectedChat: (chatId) => {
     set(
       produce((state: ChatType) => {
@@ -182,6 +193,7 @@ const useChat = create<ChatType>((set, get) => ({
       })
     );
   },
+
   resetChatAt: (index) => {
     set(
       produce((state: ChatType) => {
@@ -199,6 +211,7 @@ const useChat = create<ChatType>((set, get) => ({
       })
     );
   },
+
   editChatsTitle: (id, title) => {
     set(
       produce((state: ChatType) => {
@@ -209,6 +222,7 @@ const useChat = create<ChatType>((set, get) => ({
       })
     );
   },
+  
   clearAllChats: () => {
     set(
       produce((state: ChatType) => {
@@ -223,14 +237,21 @@ const useChat = create<ChatType>((set, get) => ({
   },
 }));
 
-const useAuth = create<AuthType>()(
+const useAuth = createWithEqualityFn<AuthType>()(
   persist(
     (set) => ({
-      token: localStorage.getItem("token") || "",
-      apikey: localStorage.getItem("apikey") || "",
+      token: "",
+      apikey: "",
+      userInfo: {
+        userName: "Enter your name",
+        gmail: "Enter your Gmail",
+        isPremium: false,
+        premiumExpiryDate: null,
+        subscriptionPlan: "Free",
+      },
       user: {
-        name: "Your name?",
-        email: "",
+        name: "User",
+        email: "Enter your Mail",
         avatar: "/imgs/default-avatar.jpg",
       },
       setToken: (token) => {
@@ -244,6 +265,13 @@ const useAuth = create<AuthType>()(
         set(
           produce((state) => {
             state.user = user;
+          })
+        );
+      },
+      setUserInfo: (userInfo) => {
+        set(
+          produce((state) => {
+            state.userInfo = userInfo;
           })
         );
       },

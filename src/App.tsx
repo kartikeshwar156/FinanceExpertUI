@@ -6,18 +6,34 @@ import GptIntro from "./components/Ui/GptIntro";
 import { IonIcon, setupIonicReact } from "@ionic/react";
 import { menuOutline, addOutline } from "ionicons/icons";
 import Header from "./components/Header/Header";
-import useChat, { chatsLength, useAuth, useTheme } from "./store/store";
+import useChat, {
+  chatsLength,
+  useAuth,
+  useTheme,
+} from "./store/store";
 import classNames from "classnames";
 import Chats from "./components/Chat/Chats";
 import Modal from "./components/modals/Modal";
 import Apikey from "./components/modals/Apikey";
+import Verification from "./components/SignInUp/Verification";
+
+// This tells TypeScript that window.Razorpay is allowed.
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 setupIonicReact();
 function App() {
   const [active, setActive] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const isChatsVisible = useChat(chatsLength);
   const addNewChat = useChat((state) => state.addNewChat);
-  const userHasApiKey = useAuth((state) => state.apikey);
+  const { apikey, userInfo } = useAuth((state) => ({
+    apikey: state.apikey,
+    userInfo: state.userInfo,
+  }));
   const [theme] = useTheme((state) => [state.theme]);
 
   useEffect(() => {
@@ -28,8 +44,15 @@ function App() {
     }
   }, [theme]);
 
-  return (
-    <div className="App  font-montserrat md:flex ">
+  // Handler to mark verification as complete
+  const handleVerificationComplete = () => setIsVerified(true);
+
+  if (!isVerified) {
+    return <Verification onComplete={handleVerificationComplete} />;
+  }
+
+  return (<>
+    { isVerified && <div className="App  font-montserrat md:flex ">
       <Navbar active={active} setActive={setActive} />
       <div className="">
         <button
@@ -54,7 +77,7 @@ function App() {
           "md:ml-[260px]": active,
         })}
       >
-        {isChatsVisible ? <Header /> : <GptIntro />}
+        {/* {isChatsVisible ? <Header /> : <GptIntro />} */}
         {isChatsVisible && <Chats />}
         <div
           className={classNames(
@@ -96,10 +119,11 @@ function App() {
           </div>
         </div>
       </main>
-      <Modal visible={!Boolean(userHasApiKey)}>
+      <Modal visible={!Boolean(apikey)}>
         <Apikey />
       </Modal>
-    </div>
+    </div>}
+    </>
   );
 }
 
