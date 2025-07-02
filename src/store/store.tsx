@@ -286,6 +286,11 @@ const useAuth = createWithEqualityFn<AuthType>()(
     }),
     {
       name: "auth",
+      partialize: (state) => {
+        // Exclude token and setToken from being persisted
+        const { token, setToken, ...rest } = state;
+        return rest;
+      },
     }
   )
 );

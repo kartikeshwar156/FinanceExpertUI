@@ -1,15 +1,14 @@
-
-
 import { useState, useEffect } from "react";
 import { useAuth } from "../../store/store";
 
 export default function SubscriptionsTab({ visible }: { visible: boolean }) {
   const { userInfo } = useAuth((state) => ({ userInfo: state.userInfo }));
+  const token = useAuth((state) => state.token);
   const [loading, setLoading] = useState(false);
 
   const plans = [
-    { label: "30 months", amount: 10, subscription: "30_months" },
-    { label: "60 months", amount: 20, subscription: "60_months" },
+    { label: "1 month", amount: 10, subscription: "30_days" },
+    { label: "3 months", amount: 20, subscription: "90_days" },
   ];
 
   const handlePayment = async (plan: typeof plans[0]) => {
@@ -19,15 +18,28 @@ export default function SubscriptionsTab({ visible }: { visible: boolean }) {
     }
     setLoading(true);
     try {
+      // First, get the Razorpay key from backend
+      const keyResponse = await fetch("http://localhost:8080/api/get-key", {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      const key = await keyResponse.text();
+      console.log(key);
+
       const response = await fetch("http://localhost:8080/api/create-order", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      //   body: `amount=${plan.amount}&usergmail=${encodeURIComponent(userInfo.gmail)}&subscription=${plan.subscription}`,
-		  body: `amount=${plan.amount}`,
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          gmail: userInfo.gmail,
+          amount: plan.amount,
+          subscription: plan.subscription
+        }),
       });
       const order = await response.json();
       const options = {
-        key: "rzp_test_JxyaXZk1bf2ohA",
+        key: key, // Use the fetched key instead of hardcoded one
         amount: order.amount,
         currency: order.currency,
         name: "ExpertAssist",
@@ -41,8 +53,8 @@ export default function SubscriptionsTab({ visible }: { visible: boolean }) {
       };
 		console.log(options);
 		console.log(window.Razorpay);
-      // @ts-ignore
-      const rzp1 = new window.Razorpay(options);
+
+    const rzp1 = new window.Razorpay(options);
 		console.log("---");
       rzp1.open();
     } catch (err) {

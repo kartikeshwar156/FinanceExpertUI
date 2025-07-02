@@ -1,4 +1,5 @@
 import { ChatMessageType, ModalList, useSettings } from "../store/store";
+import { useAuth } from "../store/store";
 
 const apiUrl = "https://api.openai.com/v1/chat/completions";
 const IMAGE_GENERATION_API_URL = "https://api.openai.com/v1/images/generations";
@@ -13,13 +14,14 @@ export async function fetchResults(
   try {
     const latestMessage = messages[messages.length - 1];
     const question = latestMessage.content;
+    const token = useAuth.getState().token;
 
     const response = await fetch("http://localhost:8080/v1/user/queryLLM", {
       method: "POST",
       signal,
       headers: {
         "Content-Type": "application/json",
-        // Add any other headers your API needs
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: JSON.stringify({ question }),
     });
@@ -83,6 +85,7 @@ export async function generateImage(
   numberOfImages: number
 ) {
   const selectedModal = useSettings.getState().settings.selectedModal;
+  const token = useAuth.getState().token;
 
   const response = await fetch(IMAGE_GENERATION_API_URL, {
     method: `POST`,

@@ -5,6 +5,7 @@ import { useAuth } from "../../store/store";
 
 const Verification = ({ onComplete }: { onComplete: () => void }) => {
   const setUserInfo = useAuth((state) => state.setUserInfo);
+  const setToken = useAuth((state) => state.setToken);
 
   // State for login
   const [loginEmail, setLoginEmail] = useState("");
@@ -37,8 +38,15 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
         body: JSON.stringify(body)
       });
       if (res.ok) {
-        const userInfo = await res.json();
-        setUserInfo(userInfo);
+        const data = await res.json();
+        setUserInfo({
+          userName: data.userName,
+          gmail: data.gmail,
+          isPremium: data.isPremium,
+          premiumExpiryDate: data.premiumExpiryDate,
+          subscriptionPlan: data.subscriptionPlan,
+        });
+        setToken(data.jwt); // Store JWT in memory only
         onComplete();
       } else {
         const data = await res.json();
@@ -71,9 +79,15 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
         body: JSON.stringify(body)
       });
       if (res.ok) {
-        const userInfo = await res.json();
-        setUserInfo(userInfo);
-        console.log(userInfo);
+        const data = await res.json();
+        setUserInfo({
+          userName: data.userName,
+          gmail: data.gmail,
+          isPremium: data.isPremium,
+          premiumExpiryDate: data.premiumExpiryDate,
+          subscriptionPlan: data.subscriptionPlan,
+        });
+        setToken(data.jwt); // Store JWT in memory only
         onComplete();
       } else {
         const data = await res.json();
