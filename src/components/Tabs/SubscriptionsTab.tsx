@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../store/store";
+import {apiRefreshCalls} from "../../services/ApiServices/ApiRefreshCalls";
 
 export default function SubscriptionsTab({ visible }: { visible: boolean }) {
   const { userInfo } = useAuth((state) => ({ userInfo: state.userInfo }));
@@ -19,13 +20,19 @@ export default function SubscriptionsTab({ visible }: { visible: boolean }) {
     setLoading(true);
     try {
       // First, get the Razorpay key from backend
-      const keyResponse = await fetch("http://localhost:8080/api/get-key", {
+
+      // const keyResponse = await fetch("http://localhost:8080/api/get-key", {
+      //   headers: token ? { Authorization: `Bearer ${token}` } : {},
+      // });
+      
+      const keyResponse = await apiRefreshCalls.makeApiCall("http://localhost:8080/api/get-key", {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
+
       const key = await keyResponse.text();
       console.log(key);
 
-      const response = await fetch("http://localhost:8080/api/create-order", {
+      const response = await apiRefreshCalls.makeApiCall("http://localhost:8080/api/create-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

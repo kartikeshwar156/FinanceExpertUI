@@ -1,5 +1,6 @@
 import { ChatMessageType, ModalList, useSettings } from "../store/store";
 import { useAuth } from "../store/store";
+import { apiRefreshCalls } from "./ApiServices/ApiRefreshCalls";
 
 const apiUrl = "https://api.openai.com/v1/chat/completions";
 const IMAGE_GENERATION_API_URL = "https://api.openai.com/v1/images/generations";
@@ -16,7 +17,7 @@ export async function fetchResults(
     const question = latestMessage.content;
     const token = useAuth.getState().token;
 
-    const response = await fetch("http://localhost:8080/v1/user/queryLLM", {
+    const response = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/user/queryLLM", {
       method: "POST",
       signal,
       headers: {

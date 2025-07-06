@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Verificatio.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useAuth } from "../../store/store";
+import { apiRefreshCalls } from "../../services/ApiServices/ApiRefreshCalls";
 
 const Verification = ({ onComplete }: { onComplete: () => void }) => {
   const setUserInfo = useAuth((state) => state.setUserInfo);
@@ -21,18 +22,18 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
     e.preventDefault();
     const body = {
       id: "",
-      gmail: signupEmail,
-      userName: signupUserName,
-      password: signupPassword,
-      isPremium: false,
-      subscriptionPlan: "FREE",
-      paymentVerified: false,
+      gmail: "kartik12345678@gmail.com",
+      userName: "",
+      password: "kartik12345@",
+      isPremium: "",
+      subscriptionPlan: "",
+      paymentVerified: "",
       registeredAt: "",
       lastLoginAt: "",
       premiumExpiryDate: ""
     };
     try {
-      const res = await fetch("http://localhost:8080/v1/user/signup", {
+      const res = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/user/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
@@ -73,7 +74,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       premiumExpiryDate: ""
     };
     try {
-      const res = await fetch("http://localhost:8080/v1/user/signin", {
+      const res = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/user/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)

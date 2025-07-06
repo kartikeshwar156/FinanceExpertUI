@@ -15,13 +15,16 @@ import Settings from "../modals/Settings";
 import Modal from "../modals/Modal";
 import SystemMessage from "../modals/SystemMessage";
 import { useState } from "react";
+import { apiRefreshCalls } from "../../services/ApiServices/ApiRefreshCalls";
 
 export default function Navbar({
   active,
   setActive,
+  onLogout
 }: {
   active: boolean;
   setActive: (v: boolean) => void;
+  onLogout: () => void;
 }) {
   const { userInfo } = useAuth((state) => ({
     userInfo: state.userInfo,
@@ -157,7 +160,19 @@ export default function Navbar({
                 </button>
                 <div className="h-[1px] bg-gray-300"></div>
                 {/* maybe in future i will add authentication */}
-                <button className=" p-2   hover:bg-gray-700  w-full  text-left flex items-center">
+                <button className=" p-2   hover:bg-gray-700  w-full  text-left flex items-center"
+                  onClick={async () => {
+                    try {
+                      await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/user/logout", {
+                        method: "POST",
+                        credentials: "include",
+                      });
+                    } catch (err) {
+                      alert("Logout Error: " + err);
+                    }
+                    onLogout();
+                  }}
+                >
                   <span className="mr-2 p-1 text-xl flex items-center">
                     <IonIcon icon={logOutOutline} />
                   </span>

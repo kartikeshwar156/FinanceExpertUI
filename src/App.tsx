@@ -35,6 +35,7 @@ function App() {
     userInfo: state.userInfo,
   }));
   const [theme] = useTheme((state) => [state.theme]);
+  const setToken = useAuth((state) => state.setToken);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -47,13 +48,18 @@ function App() {
   // Handler to mark verification as complete
   const handleVerificationComplete = () => setIsVerified(true);
 
+  const handleLogout = () => {
+    setToken(""); // Clear JWT from Zustand
+    setIsVerified(false); // Redirect to signin/signup
+  };
+
   if (!isVerified) {
     return <Verification onComplete={handleVerificationComplete} />;
   }
 
   return (<>
     { isVerified && <div className="App  font-montserrat md:flex ">
-      <Navbar active={active} setActive={setActive} />
+      <Navbar active={active} setActive={setActive} onLogout={handleLogout} />
       <div className="">
         <button
           type="button"
