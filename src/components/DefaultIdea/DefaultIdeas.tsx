@@ -2,18 +2,20 @@ import DefaultIdea from "./DefaultIdea";
 
 const defaultIdeas = [
   {
-    idea: "Design database schema",
-    moreContext: "Design a database schema for a social media app",
+    idea: "What's the market doing today?",
+    moreContext: "Give a summary of today's stock market trends and major index movements.",
   },
   {
-    idea: "Give me code snippet",
-    moreContext:
-      "Give me a code snippet to create a database schema for a social media app",
+    idea: "Top gainers and losers",
+    moreContext: "List the top gaining and losing stocks in today's market session.",
   },
-  { idea: "Tell me a joke", moreContext: "Tell me a joke" },
   {
-    idea: "Design redux store",
-    moreContext: " Design a redux store for a social media app",
+    idea: "Should I invest in tech stocks?",
+    moreContext: "Analyze whether tech stocks are a good investment right now based on market data.",
+  },
+  {
+    idea: "Global market news",
+    moreContext: "Summarize the latest global financial news affecting stock markets and currencies.",
   },
 ];
 

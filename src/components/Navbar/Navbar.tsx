@@ -97,7 +97,7 @@ export default function Navbar({
             <ChatHistory />
           </div>
           <div className="account  font-bold  z-20 bg-[#202123] border-t border-gray-500 shadow  ">
-            <div className=" self-stretch mr-4 w-full mb-2">
+            {/* <div className=" self-stretch mr-4 w-full mb-2">
               <select
                 value={selectedModal}
                 onChange={(e) => setModal(e.target.value as ModalList)}
@@ -107,7 +107,7 @@ export default function Navbar({
                   <optgroup
                     label={group.toUpperCase()}
                     key={group}
-                    // disabled={group.startsWith("dall-e")}
+                    disabled={group.startsWith("dall-e")}
                   >
                     {groupedModels[group].map((modal) => (
                       <option value={modal} key={modal}>
@@ -117,7 +117,7 @@ export default function Navbar({
                   </optgroup>
                 ))}
               </select>
-            </div>
+            </div> */}
             <div className="relative">
               <button
                 type="button"
@@ -159,7 +159,6 @@ export default function Navbar({
                   <span>Settings</span>
                 </button>
                 <div className="h-[1px] bg-gray-300"></div>
-                {/* maybe in future i will add authentication */}
                 <button className=" p-2   hover:bg-gray-700  w-full  text-left flex items-center"
                   onClick={async () => {
                     try {

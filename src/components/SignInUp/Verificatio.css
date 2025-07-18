@@ -1,33 +1,49 @@
-/* Google Font Link */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
-body {
-  min-height: 100vh;
+.verification-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  background: #7d2ae8;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #7d2ae8;
-  padding: 30px;
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
 }
 
-.container {
+.verification-wrapper .container {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  max-width: 850px;
   width: 100%;
+  max-width: 850px;
   background: #fff;
   padding: 40px 30px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   perspective: 2700px;
+  overflow: hidden;
 }
 
-.container .cover {
+.verification-wrapper .form-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.verification-wrapper .login-form,
+.verification-wrapper .signup-form {
+  flex: 1 1 45%;
+  min-width: 280px;
+}
+
+.verification-wrapper .forms {
+  width: 100%;
+}
+
+.verification-wrapper .cover {
   position: absolute;
   top: 0;
   left: 50%;
@@ -40,16 +56,16 @@ body {
   backface-visibility: hidden;
 }
 
-.container #flip:checked ~ .cover {
+.verification-wrapper #flip:checked ~ .cover {
   transform: rotateY(-180deg);
 }
 
-.container #flip:checked ~ .forms .login-form {
+.verification-wrapper #flip:checked ~ .forms .login-form {
   pointer-events: none;
 }
 
-.container .cover .front,
-.container .cover .back {
+.verification-wrapper .cover .front,
+.verification-wrapper .cover .back {
   position: absolute;
   top: 0;
   left: 0;
@@ -57,11 +73,11 @@ body {
   width: 100%;
 }
 
-.cover .back {
+.verification-wrapper .cover .back {
   transform: rotateY(180deg);
 }
 
-.container .cover img {
+.verification-wrapper .cover img {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -69,7 +85,7 @@ body {
   z-index: 10;
 }
 
-.container .cover .text {
+.verification-wrapper .cover .text {
   position: absolute;
   z-index: 10;
   height: 100%;
@@ -80,7 +96,7 @@ body {
   justify-content: center;
 }
 
-.container .cover .text::before {
+.verification-wrapper .cover .text::before {
   content: '';
   position: absolute;
   height: 100%;
@@ -89,8 +105,8 @@ body {
   background: #7d2ae8;
 }
 
-.cover .text .text-1,
-.cover .text .text-2 {
+.verification-wrapper .text .text-1,
+.verification-wrapper .text .text-2 {
   z-index: 20;
   font-size: 26px;
   font-weight: 600;
@@ -98,155 +114,106 @@ body {
   text-align: center;
 }
 
-.cover .text .text-2 {
+.verification-wrapper .text .text-2 {
   font-size: 15px;
   font-weight: 500;
 }
 
-.container .forms {
-  height: 100%;
-  width: 100%;
-  background: #fff;
-}
-
-.container .form-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.form-content .login-form,
-.form-content .signup-form {
-  width: calc(100% / 2 - 25px);
-}
-
-.forms .form-content .title {
-  position: relative;
+.verification-wrapper .form-content .title {
   font-size: 24px;
   font-weight: 500;
+  margin-bottom: 20px;
   color: #333;
 }
 
-.forms .form-content .title:before {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 3px;
-  width: 25px;
-  background: #7d2ae8;
+.verification-wrapper .input-boxes {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.forms .signup-form .title:before {
-  width: 20px;
-}
-
-.forms .form-content .input-boxes {
-  margin-top: 30px;
-}
-
-.forms .form-content .input-box {
+.verification-wrapper .input-box {
+  position: relative;
   display: flex;
   align-items: center;
-  height: 50px;
-  width: 100%;
-  margin: 10px 0;
-  position: relative;
 }
 
-.form-content .input-box input {
-  height: 100%;
+.verification-wrapper .input-box input {
   width: 100%;
-  outline: none;
+  padding: 10px 35px;
   border: none;
-  padding: 0 30px;
-  font-size: 16px;
-  font-weight: 500;
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  font-size: 16px;
+  outline: none;
 }
 
-.form-content .input-box input:focus,
-.form-content .input-box input:valid {
+.verification-wrapper .input-box input:focus {
   border-color: #7d2ae8;
 }
 
-.form-content .input-box i {
+.verification-wrapper .input-box i {
   position: absolute;
+  left: 10px;
   color: #7d2ae8;
-  font-size: 17px;
 }
 
-.forms .form-content .text {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-}
-
-.forms .form-content .text a {
-  text-decoration: none;
-}
-
-.forms .form-content .text a:hover {
-  text-decoration: underline;
-}
-
-.forms .form-content .button {
-  color: #fff;
-  margin-top: 40px;
-}
-
-.forms .form-content .button input {
-  color: #fff;
+.verification-wrapper .button input {
+  width: 100%;
+  padding: 12px;
   background: #7d2ae8;
+  color: #fff;
+  border: none;
   border-radius: 6px;
-  padding: 0;
   cursor: pointer;
-  transition: all 0.4s ease;
+  transition: background 0.3s ease;
 }
 
-.forms .form-content .button input:hover {
+.verification-wrapper .button input:hover {
   background: #5b13b9;
 }
 
-.forms .form-content label {
+.verification-wrapper .text {
+  font-size: 14px;
+  color: #333;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.verification-wrapper .text a,
+.verification-wrapper .text label {
   color: #5b13b9;
   cursor: pointer;
 }
 
-.forms .form-content label:hover {
+.verification-wrapper .text a:hover,
+.verification-wrapper .text label:hover {
   text-decoration: underline;
 }
 
-.forms .form-content .login-text,
-.forms .form-content .sign-up-text {
-  text-align: center;
-  margin-top: 25px;
-}
-
-.container #flip {
+.verification-wrapper #flip {
   display: none;
 }
 
-@media (max-width: 730px) {
-  .container .cover {
+@media (max-width: 768px) {
+  .verification-wrapper .form-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .verification-wrapper .cover {
     display: none;
   }
 
-  .form-content .login-form,
-  .form-content .signup-form {
+  .verification-wrapper .login-form,
+  .verification-wrapper .signup-form {
     width: 100%;
   }
 
-  .form-content .signup-form {
-    display: none;
-  }
-
-  .container #flip:checked ~ .forms .signup-form {
+  .verification-wrapper #flip:checked ~ .forms .signup-form {
     display: block;
   }
 
-  .container #flip:checked ~ .forms .login-form {
+  .verification-wrapper #flip:checked ~ .forms .login-form {
     display: none;
   }
 }

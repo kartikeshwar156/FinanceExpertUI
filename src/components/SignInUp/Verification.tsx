@@ -36,7 +36,8 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       const res = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/user/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        credentials: "include",
       });
       if (res.ok) {
         const data = await res.json();
@@ -77,7 +78,8 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       const res = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/user/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        credentials: "include",
       });
       if (res.ok) {
         const data = await res.json();

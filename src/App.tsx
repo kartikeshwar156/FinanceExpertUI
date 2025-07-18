@@ -53,12 +53,11 @@ function App() {
     setIsVerified(false); // Redirect to signin/signup
   };
 
-  if (!isVerified) {
-    return <Verification onComplete={handleVerificationComplete} />;
-  }
+  // if (!isVerified) {
+  //   return <Verification onComplete={handleVerificationComplete} />;
+  // }
 
-  return (<>
-    { isVerified && <div className="App  font-montserrat md:flex ">
+  return (<div className="App  font-montserrat md:flex ">
       <Navbar active={active} setActive={setActive} onLogout={handleLogout} />
       <div className="">
         <button
@@ -125,11 +124,14 @@ function App() {
           </div>
         </div>
       </main>
-      <Modal visible={!Boolean(apikey)}>
-        <Apikey />
-      </Modal>
-    </div>}
-    </>
+      {!isVerified &&
+      <div className="verification-wrapper">
+        <div className="container">
+          <Verification onComplete={handleVerificationComplete} />
+        </div>
+      </div>
+}
+    </div>
   );
 }
 
