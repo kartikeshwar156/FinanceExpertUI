@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
+    "postbuild": "echo 'Build completed. Checking dist folder...' && dir dist",
     "start": "node server.js",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src"
   },
