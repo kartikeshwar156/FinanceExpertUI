@@ -17,7 +17,7 @@ export async function fetchResults(
     const question = latestMessage.content;
     const token = useAuth.getState().token;
 
-    const response = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/user/queryLLM", {
+    const response = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/user/queryLLM`, {
       method: "POST",
       signal,
       headers: {

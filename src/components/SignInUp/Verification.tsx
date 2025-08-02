@@ -23,7 +23,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
     const body = {
       id: "",
       gmail: "kartik12345678@gmail.com",
-      userName: "",
+      userName: "Kartikeshwar",
       password: "kartik12345@",
       isPremium: "",
       subscriptionPlan: "",
@@ -33,7 +33,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       premiumExpiryDate: ""
     };
     try {
-      const res = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/user/signup", {
+      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/user/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -65,7 +65,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
     const body = {
       id: "",
       gmail: "kartik12345678@gmail.com",
-      userName: "",
+      userName: "Kartikeshwar123",
       password: "kartik12345@",
       isPremium: "",
       subscriptionPlan: "",
@@ -75,7 +75,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       premiumExpiryDate: ""
     };
     try {
-      const res = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/user/signin", {
+      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/user/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

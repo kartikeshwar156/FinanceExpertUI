@@ -21,18 +21,18 @@ export default function SubscriptionsTab({ visible }: { visible: boolean }) {
     try {
       // First, get the Razorpay key from backend
 
-      // const keyResponse = await fetch("http://localhost:8080/api/get-key", {
+      // const keyResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/get-key`, {
       //   headers: token ? { Authorization: `Bearer ${token}` } : {},
       // });
       
-      const keyResponse = await apiRefreshCalls.makeApiCall("http://localhost:8080/api/get-key", {
+      const keyResponse = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/api/get-key`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
       const key = await keyResponse.text();
       console.log(key);
 
-      const response = await apiRefreshCalls.makeApiCall("http://localhost:8080/api/create-order", {
+      const response = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/api/create-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export default function SubscriptionsTab({ visible }: { visible: boolean }) {
         name: "ExpertAssist",
         description: `Payment for ${plan.label} subscription`,
         order_id: order.id,
-        callback_url: "http://localhost:8080/api/payment-callback",
+        callback_url: `${import.meta.env.VITE_API_BASE_URL}/api/payment-callback`,
         prefill: {
           name: userInfo.userName || "User Name",
           email: userInfo.gmail,

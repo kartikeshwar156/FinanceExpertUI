@@ -162,7 +162,7 @@ export default function Navbar({
                 <button className=" p-2   hover:bg-gray-700  w-full  text-left flex items-center"
                   onClick={async () => {
                     try {
-                      await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/user/logout", {
+                      await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/user/logout`, {
                         method: "POST",
                         credentials: "include",
                       });

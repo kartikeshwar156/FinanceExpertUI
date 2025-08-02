@@ -19,7 +19,7 @@ export default function AdminTab({ visible }: { visible: boolean }) {
     setLoading(true);
     setMessage("");
     try {
-      const res = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/admin/make-admin", {
+      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/admin/make-admin`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}), 
@@ -48,13 +48,13 @@ export default function AdminTab({ visible }: { visible: boolean }) {
     setLoading(true);
     setMessage("");
     try {
-      const res = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/admin/remove-admin", {
+      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/admin/remove-admin`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}), 
         },
         body: JSON.stringify({ 
-          gmail: makeAdminEmail ,
+          gmail: removeAdminEmail ,
           adminGmail: userInfo?.gmail,
         }),
       });
@@ -152,7 +152,7 @@ export default function AdminTab({ visible }: { visible: boolean }) {
         seenTickers.add(ticker);
       }
       // If validation passes, proceed to upload
-      const res = await apiRefreshCalls.makeApiCall("http://localhost:8080/v1/admin/upload-data", {
+      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/admin/upload-data`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}), 
