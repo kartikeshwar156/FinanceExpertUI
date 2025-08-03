@@ -98,6 +98,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       }
     } catch (err) {
       alert("Signin error: " + err);
+      console.log(`${import.meta.env.VITE_API_BASE_URL}`);
     }
   };
 
