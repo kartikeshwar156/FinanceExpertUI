@@ -75,7 +75,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       premiumExpiryDate: ""
     };
     try {
-      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/user/signin`, {
+      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}v1/user/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
