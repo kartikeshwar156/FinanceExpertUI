@@ -1,9 +1,10 @@
 import { useAuth } from "../../store/store";
+import { VITE_API_BASE_URL } from "../../config/api";
 
 class ApiRefreshCalls {
   private async refreshToken(): Promise<boolean> {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/refresh`, {
+      const response = await fetch(`${VITE_API_BASE_URL}/api/auth/refresh`, {
         method: "POST",
         credentials: "include",
       });

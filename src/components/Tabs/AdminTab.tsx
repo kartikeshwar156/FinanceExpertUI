@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useAuth } from "../../store/store";
 import { apiRefreshCalls } from "../../services/ApiServices/ApiRefreshCalls";
+import { VITE_API_BASE_URL } from "../../config/api";
 
 export default function AdminTab({ visible }: { visible: boolean }) {
   const { userInfo } = useAuth((state) => ({ userInfo: state.userInfo }));
@@ -19,7 +20,7 @@ export default function AdminTab({ visible }: { visible: boolean }) {
     setLoading(true);
     setMessage("");
     try {
-      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/admin/make-admin`, {
+      const res = await apiRefreshCalls.makeApiCall(`${VITE_API_BASE_URL}/v1/admin/make-admin`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}), 
@@ -48,7 +49,7 @@ export default function AdminTab({ visible }: { visible: boolean }) {
     setLoading(true);
     setMessage("");
     try {
-      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/admin/remove-admin`, {
+      const res = await apiRefreshCalls.makeApiCall(`${VITE_API_BASE_URL}/v1/admin/remove-admin`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}), 
@@ -152,7 +153,7 @@ export default function AdminTab({ visible }: { visible: boolean }) {
         seenTickers.add(ticker);
       }
       // If validation passes, proceed to upload
-      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/admin/upload-data`, {
+      const res = await apiRefreshCalls.makeApiCall(`${VITE_API_BASE_URL}/v1/admin/upload-data`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}), 

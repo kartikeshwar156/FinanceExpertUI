@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../store/store";
 import {apiRefreshCalls} from "../../services/ApiServices/ApiRefreshCalls";
+import { VITE_API_BASE_URL } from "../../config/api";
 
 export default function SubscriptionsTab({ visible }: { visible: boolean }) {
   const { userInfo } = useAuth((state) => ({ userInfo: state.userInfo }));
@@ -25,14 +26,14 @@ export default function SubscriptionsTab({ visible }: { visible: boolean }) {
       //   headers: token ? { Authorization: `Bearer ${token}` } : {},
       // });
       
-      const keyResponse = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/api/get-key`, {
+      const keyResponse = await apiRefreshCalls.makeApiCall(`${VITE_API_BASE_URL}/api/get-key`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
       const key = await keyResponse.text();
       console.log(key);
 
-      const response = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/api/create-order`, {
+      const response = await apiRefreshCalls.makeApiCall(`${VITE_API_BASE_URL}/api/create-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +53,7 @@ export default function SubscriptionsTab({ visible }: { visible: boolean }) {
         name: "ExpertAssist",
         description: `Payment for ${plan.label} subscription`,
         order_id: order.id,
-        callback_url: `${import.meta.env.VITE_API_BASE_URL}/api/payment-callback`,
+        callback_url: `${VITE_API_BASE_URL}/api/payment-callback`,
         prefill: {
           name: userInfo.userName || "User Name",
           email: userInfo.gmail,

@@ -3,6 +3,7 @@ import "./Verificatio.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useAuth } from "../../store/store";
 import { apiRefreshCalls } from "../../services/ApiServices/ApiRefreshCalls";
+import { VITE_API_BASE_URL } from "../../config/api";
 
 const Verification = ({ onComplete }: { onComplete: () => void }) => {
   const setUserInfo = useAuth((state) => state.setUserInfo);
@@ -33,7 +34,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       premiumExpiryDate: ""
     };
     try {
-      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/user/signup`, {
+      const res = await apiRefreshCalls.makeApiCall(`${VITE_API_BASE_URL}/v1/user/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -62,6 +63,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
   // Handle Signin
   const handleSignin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(`${VITE_API_BASE_URL}/v1/user/signin`);
     const body = {
       id: "",
       gmail: "kartik12345678@gmail.com",
@@ -75,7 +77,8 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       premiumExpiryDate: ""
     };
     try {
-      const res = await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}v1/user/signin`, {
+      
+      const res = await apiRefreshCalls.makeApiCall(`${VITE_API_BASE_URL}/v1/user/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -98,7 +101,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       }
     } catch (err) {
       alert("Signin error: " + err);
-      // console.log(`${import.meta.env.VITE_API_BASE_URL}`);
+      console.log(`${VITE_API_BASE_URL}/v1/user/signin`);
     }
   };
 

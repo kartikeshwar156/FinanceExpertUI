@@ -16,6 +16,7 @@ import Modal from "../modals/Modal";
 import SystemMessage from "../modals/SystemMessage";
 import { useState } from "react";
 import { apiRefreshCalls } from "../../services/ApiServices/ApiRefreshCalls";
+import { VITE_API_BASE_URL } from "../../config/api";
 
 export default function Navbar({
   active,
@@ -162,7 +163,7 @@ export default function Navbar({
                 <button className=" p-2   hover:bg-gray-700  w-full  text-left flex items-center"
                   onClick={async () => {
                     try {
-                      await apiRefreshCalls.makeApiCall(`${import.meta.env.VITE_API_BASE_URL}/v1/user/logout`, {
+                      await apiRefreshCalls.makeApiCall(`${VITE_API_BASE_URL}/v1/user/logout`, {
                         method: "POST",
                         credentials: "include",
                       });
