@@ -207,13 +207,14 @@
   .verification-wrapper .login-form,
   .verification-wrapper .signup-form {
     width: 100%;
+    display: none;
+  }
+
+  .verification-wrapper #flip:not(:checked) ~ .forms .login-form {
+    display: block;
   }
 
   .verification-wrapper #flip:checked ~ .forms .signup-form {
     display: block;
-  }
-
-  .verification-wrapper #flip:checked ~ .forms .login-form {
-    display: none;
   }
 }
