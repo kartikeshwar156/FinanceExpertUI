@@ -113,7 +113,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
           <img src="/imgs/frontImg.jpg" alt="" />
           <div className="text">
             <span className="text-1">
-              Every new friend is a <br /> new adventure
+              Uncover the stories <br /> behind the headlines
             </span>
             <span className="text-2">Let's get connected</span>
           </div>
@@ -122,7 +122,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
           <img className="backImg" src="/imgs/backImg.jpg" alt="" />
           <div className="text">
             <span className="text-1">
-              Complete miles of journey <br /> with one step
+              Connect to the world, <br /> one story at a time
             </span>
             <span className="text-2">Let's get started</span>
           </div>
