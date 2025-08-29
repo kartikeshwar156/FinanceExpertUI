@@ -6,11 +6,7 @@ import GptIntro from "./components/Ui/GptIntro";
 import { IonIcon, setupIonicReact } from "@ionic/react";
 import { menuOutline, addOutline } from "ionicons/icons";
 import Header from "./components/Header/Header";
-import useChat, {
-  chatsLength,
-  useAuth,
-  useTheme,
-} from "./store/store";
+import useChat, { chatsLength, useAuth, useTheme } from "./store/store";
 import classNames from "classnames";
 import Chats from "./components/Chat/Chats";
 import Modal from "./components/modals/Modal";
@@ -53,11 +49,8 @@ function App() {
     setIsVerified(false); // Redirect to signin/signup
   };
 
-  // if (!isVerified) {
-  //   return <Verification onComplete={handleVerificationComplete} />;
-  // }
-
-  return (<div className="App  font-montserrat md:flex ">
+  return (
+    <div className="App font-montserrat md:flex bg-[#202123]">
       <Navbar active={active} setActive={setActive} onLogout={handleLogout} />
       <div className="">
         <button
@@ -68,7 +61,8 @@ function App() {
           <i className="fa-regular fa-window-maximize rotate-90"></i>
         </button>
       </div>
-      <div className="p-3 z-10 flex items-center justify-between bg-[#202123] dark:bg-[#343541] border-b sticky top-0  text-gray-300 md:hidden">
+      {/* Mobile top bar */}
+      <div className="p-3 z-10 flex items-center justify-between bg-[#202123] border-b sticky top-0 text-gray-300 md:hidden">
         <button onClick={() => setActive(true)} className=" text-2xl flex">
           <IonIcon icon={menuOutline} />
         </button>
@@ -77,57 +71,56 @@ function App() {
           <IonIcon icon={addOutline} />
         </button>
       </div>
+
       <main
-        className={classNames(" w-full transition-all duration-500", {
-          "md:ml-[260px]": active,
-        })}
-      >
-        {/* {isChatsVisible ? <Header /> : <GptIntro />} */}
-        {isChatsVisible && <Chats />}
-        <div
-          className={classNames(
-            "fixed left-0 px-2  right-0 transition-all duration-500 bottom-0 dark:shadow-lg py-1 shadow-md backdrop-blur-sm bg-white/10 dark:bg-dark-primary/10",
-            {
-              "dark:bg-dark-primary bg-white": isChatsVisible,
-              "md:ml-[260px]": active,
-            }
-          )}
-        >
+  className={classNames(
+    "w-full min-h-screen transition-all duration-500 bg-[#202123] flex flex-col",
+    {
+      "md:ml-[260px]": active,
+    }
+  )}
+>
+  {isChatsVisible && <Chats />}
+
+  <div
+    className={classNames(
+      "fixed left-0 px-2 right-0 transition-all duration-500 bottom-0 dark:shadow-lg py-1 shadow-md backdrop-blur-sm bg-[#202123]",
+      {
+        "md:ml-[260px]": active,
+      }
+    )}
+  >
+
           <div className="max-w-2xl md:max-w-[calc(100% - 260px)] mx-auto">
             {!isChatsVisible && (
-              <>
+              <div className="bg-[#202123]">
                 <DefaultIdeas />
-              </>
+              </div>
             )}
 
             <div className="dark:bg-inherit">
               <UserQuery />
-              <footer className="info text-sm py-2 text-gray-700 dark:text-white text-center">
-                
-                <span className="mx-2">
-                  
-                </span>
-                
+              <footer className="info text-sm py-2 text-gray-400 dark:text-gray-300 text-center">
+                <span className="mx-2"></span>
                 <a
                   href="https://www.prasadbro.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="ml-2 underline"
-                >
-                  
-                </a>
+                ></a>
               </footer>
             </div>
           </div>
         </div>
       </main>
-      {!isVerified &&
-      <div className="verification-wrapper">
-        <div className="container">
-          <Verification onComplete={handleVerificationComplete} />
+
+      {!isVerified && (
+        <div className="verification-wrapper">
+          <div className="container">
+            <Verification onComplete={handleVerificationComplete} />
+          </div>
         </div>
-      </div>
-}
+      )}
     </div>
   );
 }

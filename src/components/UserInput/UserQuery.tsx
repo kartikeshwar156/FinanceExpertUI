@@ -32,7 +32,7 @@ export default function UserQuery() {
 
   async function handleOnSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (query) {
+    if (query.trim()) {
       addChat(createMessage("user", query, "text"));
       addChat(
         createMessage(
@@ -48,7 +48,7 @@ export default function UserQuery() {
 
   return (
     <form
-      className="input shadow-md dark:bg-[#40414f] bg-white  dark:border-white border-gray-700 border-2 flex items-center   rounded-md"
+      className="input shadow-md dark:bg-[#40414f] bg-white dark:border-gray-600 border-gray-300 border flex items-center rounded-md"
       onSubmit={handleOnSubmit}
       ref={formRef}
     >
@@ -56,7 +56,7 @@ export default function UserQuery() {
         <textarea
           name="query"
           ref={textareaRef}
-          className="h-6 px-2  w-full outline-none resize-none dark:bg-transparent dark:text-white placeholder:font-bold"
+          className="h-6 px-2 w-full outline-none resize-none dark:bg-transparent dark:text-white placeholder:font-bold"
           placeholder="Send a message"
           onKeyDown={handleOnKeyDown}
           onChange={handleOnInputChange}
@@ -64,11 +64,11 @@ export default function UserQuery() {
           autoFocus
         ></textarea>
       </div>
-      <div className=" w-1/12 text-center mx-2">
+      <div className="w-1/12 text-center mx-2">
         <button
           type="submit"
           className={classNames(
-            " text-center  text-gray-600 dark:text-white transition inline-flex items-center justify-center py-2 px-2 rounded-md",
+            "text-center text-gray-600 dark:text-white transition inline-flex items-center justify-center py-2 px-2 rounded-md",
             { "bg-green-500 dark:text-gray-200 text-white": query }
           )}
         >

@@ -14,7 +14,7 @@ import useChat, { ModalList, useAuth, useSettings } from "../../store/store";
 import Settings from "../modals/Settings";
 import Modal from "../modals/Modal";
 import SystemMessage from "../modals/SystemMessage";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { apiRefreshCalls } from "../../services/ApiServices/ApiRefreshCalls";
 import { VITE_API_BASE_URL } from "../../config/api";
 
@@ -60,6 +60,33 @@ export default function Navbar({
     },
     {}
   );
+  const [sidebarWidth, setSidebarWidth] = useState(260);
+  const isResizing = useRef(false);
+
+  // Drag handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    isResizing.current = true;
+    document.body.style.cursor = "col-resize";
+  };
+  const handleMouseMove = (e: MouseEvent) => {
+    if (isResizing.current) {
+      const newWidth = Math.max(180, Math.min(500, e.clientX));
+      setSidebarWidth(newWidth);
+    }
+  };
+  const handleMouseUp = () => {
+    isResizing.current = false;
+    document.body.style.cursor = "";
+  };
+  // Attach listeners
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
 
   return (
     <>
@@ -71,9 +98,10 @@ export default function Navbar({
       >
         <nav
           className={classnames(
-            " absolute left-0 bottom-0 top-0  md:flex-grow-1 w-9/12 md:w-[260px] bg-[#202123] text-white z-10 flex flex-col transition duration-500",
+            `absolute left-0 bottom-0 top-0 md:flex-grow-1 bg-[#202123] text-white z-10 flex flex-col transition duration-500`,
             { "translate-x-0": active, "-translate-x-[150%]": !active }
           )}
+          style={{ width: sidebarWidth, minWidth: 180, maxWidth: 500 }}
         >
           <div className="flex mb-2  items-center justify-between gap-2 p-2">
             <button
@@ -181,6 +209,11 @@ export default function Navbar({
               </div>
             </div>
           </div>
+          <div
+            style={{ position: "absolute", top: 0, right: 0, width: 6, height: "100%", cursor: "col-resize", zIndex: 100 }}
+            onMouseDown={handleMouseDown}
+            className="bg-gray-700 hover:bg-gray-500 transition"
+          ></div>
           <button
             type="button"
             onClick={() => setActive(false)}
