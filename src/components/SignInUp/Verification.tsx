@@ -10,8 +10,8 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
   const setToken = useAuth((state) => state.setToken);
 
   // State for login
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const [loginEmail, setLoginEmail] = useState("kartik12345678@gmail.com");
+  const [loginPassword, setLoginPassword] = useState("kartik12345@");
 
   // State for signup
   const [signupUserName, setSignupUserName] = useState("");
@@ -23,9 +23,9 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
     e.preventDefault();
     const body = {
       id: "",
-      gmail: "kartik12345678@gmail.com",
-      userName: "Kartikeshwar",
-      password: "kartik12345@",
+      gmail: signupEmail,
+      userName: signupUserName,
+      password: signupPassword,
       isPremium: "",
       subscriptionPlan: "",
       paymentVerified: "",
@@ -66,9 +66,9 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
     console.log(`${VITE_API_BASE_URL}/v1/user/signin`);
     const body = {
       id: "",
-      gmail: "kartik12345678@gmail.com",
-      userName: "Kartikeshwar123",
-      password: "kartik12345@",
+      gmail: loginEmail,
+      userName: "",
+      password: loginPassword,
       isPremium: "",
       subscriptionPlan: "",
       paymentVerified: "",
@@ -77,7 +77,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
       premiumExpiryDate: ""
     };
     try {
-      
+
       const res = await apiRefreshCalls.makeApiCall(`${VITE_API_BASE_URL}/v1/user/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -139,7 +139,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
                   <input
                     type="text"
                     placeholder="Enter your email"
-                  //   required
+                    //   required
                     value={loginEmail}
                     onChange={e => setLoginEmail(e.target.value)}
                   />
@@ -149,7 +149,7 @@ const Verification = ({ onComplete }: { onComplete: () => void }) => {
                   <input
                     type="password"
                     placeholder="Enter your password"
-                  //   required
+                    //   required
                     value={loginPassword}
                     onChange={e => setLoginPassword(e.target.value)}
                   />

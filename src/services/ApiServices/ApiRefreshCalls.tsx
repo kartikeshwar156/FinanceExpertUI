@@ -24,15 +24,15 @@ class ApiRefreshCalls {
 
   async makeApiCall(url: string, options: RequestInit = {}): Promise<Response> {
     const token = useAuth.getState().token;
-    
+
     try {
       const response = await fetch(url, { ...options });
       console.log("✅ Got response:", response.status);
-      
+
       if (response.status === 401) {
         console.log("🔐 Handling 401...");
         const refreshSuccess = await this.refreshToken();
-        
+
         if (refreshSuccess) {
           console.log("🔄 Retrying with new token...");
           return await fetch(url, { ...options });
@@ -42,43 +42,43 @@ class ApiRefreshCalls {
           throw new Error("Authentication failed");
         }
       }
-      
+
       return response;
-      
+
     } catch (error) {
       console.error("❌ Fetch error:", error);
-      
+
       // Check if it's a CORS error (likely due to expired JWT)
       console.log("🌐 Detected CORS error - likely expired JWT");
       console.log("🔄 Attempting token refresh...");
-        
-        const refreshSuccess = await this.refreshToken();
-        
-        if (refreshSuccess) {
-          console.log("✅ Token refreshed, retrying request...");
 
-          const newHeaders = {
-            ...(options.headers || {}),
-            Authorization: `Bearer ${useAuth.getState().token}`,
-          };
+      const refreshSuccess = await this.refreshToken();
 
-          try {
-            return await fetch(url, {
-               ...options ,
-               headers: newHeaders,
-              }
-            );
-          } catch (retryError) {
-            console.error("❌ Retry also failed:", retryError);
-            throw retryError;
+      if (refreshSuccess) {
+        console.log("✅ Token refreshed, retrying request...");
+
+        const newHeaders = {
+          ...(options.headers || {}),
+          Authorization: `Bearer ${useAuth.getState().token}`,
+        };
+
+        try {
+          return await fetch(url, {
+            ...options,
+            headers: newHeaders,
           }
-        } else {
-          console.log("❌ Token refresh failed");
-          const { setToken } = useAuth.getState();
-          setToken("");
-          throw new Error("Authentication failed - token refresh unsuccessful");
+          );
+        } catch (retryError) {
+          console.error("❌ Retry also failed:", retryError);
+          throw retryError;
         }
-      
+      } else {
+        console.log("❌ Token refresh failed");
+        const { setToken } = useAuth.getState();
+        setToken("");
+        throw new Error("Authentication failed - token refresh unsuccessful");
+      }
+
       // If it's not a CORS error, re-throw
       throw error;
     }
